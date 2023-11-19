@@ -14,10 +14,10 @@ class objPos
 
         void setObjPos(objPos o);        
         void setObjPos(int xPos, int yPos, char sym);  
-        void getObjPos(objPos &returnPos);
+        void getObjPos(objPos &returnPos);      // Pass by reference, provide an empty objPos into this function
         char getSymbol();
 
-        bool isPosEqual(const objPos* refPos);
+        bool isPosEqual(const objPos* refPos);      // Pass by pointer
         
         char getSymbolIfPosEqual(const objPos* refPos);
 };

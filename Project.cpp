@@ -61,6 +61,10 @@ void DrawScreen(void)
     objPos space;
     objPos newline;
 
+    board.setObjPos(j, i, symbol);
+    newline.setObjPos(j, i, '\n');
+    space.setObjPos(j, i, ' ');
+
 
     MacUILib_clearScreen();    
 
@@ -68,39 +72,36 @@ void DrawScreen(void)
     {
         for (j = 0; j < 20; j++)
         {
-            if (i == 0 || i == 9)
+            if (i == 0 || i == 9)       // Row 1 and 10
             {
-                board.setObjPos(j, i, symbol);
                 MacUILib_printf("%c", board.symbol);
+
                 if (j == 19)
                 {
-                    newline.setObjPos(j, i, '\n');
-                    MacUILib_printf("%c", newline.symbol);
+                    MacUILib_printf("%c", newline.symbol);      // Add space at the last colum
                 }
             }
 
 
             else
             {
-                if (j ==0)
+                if (j ==0)      // First column
                 {
                     MacUILib_printf("%c", board.symbol);
                 }
 
-                else if (j == 19)
+                else if (j == 19)       // Last column (add newline)
                 {
                     MacUILib_printf("%c%c", board.symbol, newline.symbol);
                 }
 
                 else
                 {
-                    space.setObjPos(j, i, ' ');
                     MacUILib_printf("%c", space.symbol);
                 }
             }
         }
     }
-
 }
 
 void LoopDelay(void)
