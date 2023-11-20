@@ -184,7 +184,7 @@ void testInsertTail_5Element()
 	objPos bodyPos{2, 5, 'a'};  
 	objPos tailPos{3, 3, 'm'};
 
-	// Insert 4 body elements, then 1 unique head element
+	// Insert 4 body elements, then 1 unique tail element
 	objPosArrayList thisList;
 	thisList.insertTail(bodyPos);
 	thisList.insertTail(bodyPos);
@@ -216,7 +216,7 @@ void testInsertTail_5Element()
 		ASSERT_EQUAL(expectedCheck, actualCheck);	
 	}
 
-	// Finally, check the tail element is the body element
+	// Finally, check the tail element is the unique element
 	thisList.getTailElement(currentPos);
 	actualCheck = tailPos.isPosEqual(&currentPos);
 
@@ -316,7 +316,7 @@ void testRemoveTail_5Element()
 	objPos bodyPos{2, 5, 'a'};  
 	objPos tailPos{3, 3, 'm'};
 
-	// Insert 4 body elements, then 1 unique head element
+	// Insert 4 body elements, then 1 unique tail element
 	objPosArrayList thisList;
 	thisList.insertTail(bodyPos);
 	thisList.insertTail(bodyPos);

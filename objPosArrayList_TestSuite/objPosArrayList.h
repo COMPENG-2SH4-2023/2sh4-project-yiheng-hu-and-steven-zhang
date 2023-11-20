@@ -4,13 +4,16 @@
 #define ARRAY_MAX_CAP 200
 
 #include "objPos.h"
+#include <iostream>
+
+using namespace std;
 
 class objPosArrayList
 {
     private:
-        objPos* aList;
-        int sizeList;
-        int sizeArray;
+        objPos* List;
+        int listSize;
+        int arrayCapacity;
 
     public:
         objPosArrayList();
