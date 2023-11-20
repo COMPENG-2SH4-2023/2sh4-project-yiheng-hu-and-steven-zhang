@@ -79,7 +79,6 @@ void Player::movePlayer()
 
         case UP: 
             playerPos.y--;
-            mainGameMechsRef->incrementScore();
             if (playerPos.y == 0)
             {
                 playerPos.y = 13;

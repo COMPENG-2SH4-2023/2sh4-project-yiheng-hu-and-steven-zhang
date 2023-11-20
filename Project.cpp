@@ -11,9 +11,6 @@ using namespace std;
 GameMechs* myGame;
 Player* myPlayer;
 
-objPos board;
-objPos space;
-objPos newline;
 
 void Initialize(void);
 void GetInput(void);
@@ -68,11 +65,11 @@ void DrawScreen(void)
     int i, j;       // i is row, j is column
     char symbol = '#';
 
-    /*
+    
     objPos board;
     objPos space;
     objPos newline;
-    */
+    
 
     objPos tempPos;
     myPlayer->getPlayerPos(tempPos);
@@ -126,7 +123,7 @@ void DrawScreen(void)
     MacUILib_printf("Your score is: %d\n", myGame->getScore());
 
 
-    if (myGame->getScore() == 50)
+    if (myGame->getScore() == 20)
     {
         MacUILib_printf("You lose the game, keep up next time!\n");
         myGame->setLoseFlag();
