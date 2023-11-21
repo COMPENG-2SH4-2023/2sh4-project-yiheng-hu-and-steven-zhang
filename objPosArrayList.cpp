@@ -44,6 +44,12 @@ void objPosArrayList::insertHead(objPos thisPos)
 
 void objPosArrayList::insertTail(objPos thisPos)
 {
+    if(listSize == arrayCapacity)
+    {
+        cout << "Array full..." << endl;
+        return;
+    }
+
     listSize++;
     
     List[listSize - 1] = thisPos;

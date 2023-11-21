@@ -9,6 +9,6 @@
 		<testcase classname="AllTests" name="testRemoveHead_5Element"/>
 		<testcase classname="AllTests" name="testRemoveTail_1Element"/>
 		<testcase classname="AllTests" name="testRemoveTail_5Element"/>
-		<testcase classname="AllTests" name="testInsertHeadAndTail_5Element"/>
+		<testcase classname="AllTests" name="testRemoveHeadAndTail_5Element"/>
 	</testsuite>
 </testsuites>

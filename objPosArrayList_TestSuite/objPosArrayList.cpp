@@ -44,15 +44,14 @@ void objPosArrayList::insertHead(objPos thisPos)
 
 void objPosArrayList::insertTail(objPos thisPos)
 {
-    listSize++;
-    
-    List[listSize - 1] = thisPos;
-
-    for (int i = 0; i < listSize; i++)
+    if(listSize == arrayCapacity)
     {
-        cout << List[i].getSymbol() << ' ';
+        cout << "Array full..." << endl;
+        return;
     }
-    cout << endl;
+
+    listSize++;
+    List[listSize - 1] = thisPos;
 }
 
 void objPosArrayList::removeHead()
