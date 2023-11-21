@@ -3,13 +3,19 @@
 #include "objPos.h"
 #include "GameMechs.h"
 #include "Player.h"
+#include "Food.h"
 
 using namespace std;
 
 #define DELAY_CONST 100000
 
-GameMechs* myGame;
-Player* myPlayer;
+GameMechs* myGame;      // Global pointer to GameMechs class
+Player* myPlayer;       // Global pointer to Plyer class
+Food* myFood;           // Global pointer to Food class
+
+
+objPos tempFoodPos;     // Reference for the food position
+objPos tempPlyerPos;    // Reference for the player position
 
 
 void Initialize(void);
@@ -46,6 +52,12 @@ void Initialize(void)
 
     myGame = new GameMechs(30, 15);
     myPlayer = new Player(myGame);
+    myFood = new Food();
+
+    tempPlyerPos.setObjPos(myGame->getBoardSizeX() / 2, myGame->getBoardSizeY() / 2, '*');      // Initialize player position for generating
+
+    myFood->generateFood(tempPlyerPos);     // Avoid overlapping initial player position
+    myFood->getFoodPos(tempFoodPos);
 
 }
 
@@ -58,23 +70,29 @@ void RunLogic(void)
 {
     myPlayer->updatePlayerDir();
     myPlayer->movePlayer();
+
 }
 
 void DrawScreen(void)
 {
     int i, j;       // i is row, j is column
-    char symbol = '#';
 
     
-    objPos board;
+    objPos board;       
     objPos space;
     objPos newline;
     
 
-    objPos tempPos;
-    myPlayer->getPlayerPos(tempPos);
+    myPlayer->getPlayerPos(tempPlyerPos);
 
-    board.setObjPos(j, i, symbol);
+    /*
+    myFood->generateFood(tempPlyerPos);      // Avoid overlapping player
+    myFood->getFoodPos(tempFoodPos);
+    */
+    
+    
+    // Assign the same index variable and different characters to these three objects
+    board.setObjPos(j, i, '#');
     newline.setObjPos(j, i, '\n');
     space.setObjPos(j, i, ' ');
 
@@ -95,39 +113,40 @@ void DrawScreen(void)
                 }
             }
 
-            else if (i == tempPos.y && j == tempPos.x)
+            else if (i == tempPlyerPos.y && j == tempPlyerPos.x)
             {
-                MacUILib_printf("%c", tempPos.symbol);      // Add player position
+                MacUILib_printf("%c", tempPlyerPos.symbol);      // Add player position
+            }
+
+            else if (i == tempFoodPos.y && j == tempFoodPos.x)
+            {
+                MacUILib_printf("%c", tempFoodPos.symbol);      // Add food position
             }
 
             else
             {
-                if (j == 0)      // First column
+                if (j == 0)      // Add '#' at each row of the first column
                 {
                     MacUILib_printf("%c", board.symbol);
                 }
 
-                else if (j == 29)       // Last column (add newline)
+                else if (j == 29)       // Add '#' and new line at each row of the last column
                 {
                     MacUILib_printf("%c%c", board.symbol, newline.symbol);
                 }
 
                 else
                 {
-                    MacUILib_printf("%c", space.symbol);
+                    MacUILib_printf("%c", space.symbol);    // Add space
                 }
             }
         }
     }
 
     MacUILib_printf("Your score is: %d\n", myGame->getScore());
+    MacUILib_printf("Food position: [%d %d]\n", tempFoodPos.x, tempFoodPos.y);
+    MacUILib_printf("Player position: [%d %d]\n", tempPlyerPos.x, tempPlyerPos.y);
 
-
-    if (myGame->getScore() == 20)
-    {
-        MacUILib_printf("You lose the game, keep up next time!\n");
-        myGame->setLoseFlag();
-    }
 }
 
 void LoopDelay(void)
