@@ -6,6 +6,8 @@
 #include "objPosArrayList.h"
 #include <iostream>
 
+using namespace std;
+
 // WARNING!!  This test suite does not contain any test cases for accessing elements out-of-bound.
 //
 // You must deploy exception throwing for all out-of-bound accesses.
@@ -353,11 +355,62 @@ void testRemoveTail_5Element()
 	// The destructor will be called automatically for stack-allocated objects
 }
 
+// Additional test cases
+void testRemoveHeadAndTail_5Element()
+{
+	objPos currentPos;
+	objPos bodyPos{2, 5, 'a'};  
+	objPos headPos{3, 3, 'm'};
+	objPos tailPos{5, 4, 'h'};
+
+	// Insert 4 body elements, then 1 unique head element
+	objPosArrayList thisList;
+	thisList.insertHead(bodyPos);
+	thisList.insertHead(bodyPos);
+	thisList.insertHead(bodyPos);
+	thisList.insertHead(headPos);
+	thisList.insertTail(tailPos);
+
+	thisList.removeHead();
+	thisList.removeTail();
+
+	int expectedSize = 3;
+	int actualSize = thisList.getSize();
+		
+	// Confirm the list size is now 5
+	ASSERT_EQUAL(expectedSize, actualSize);
+
+	bool expectedCheck = true;
+	bool actualCheck;
+
+	// Then, check the head element
+	thisList.getHeadElement(currentPos);
+	actualCheck = bodyPos.isPosEqual(&currentPos);
+
+	ASSERT_EQUAL(expectedCheck, actualCheck);
+
+	// Next, chech the body elements at index 1.
+	for(int i = 1; i < actualSize - 1; i++)
+	{
+		thisList.getElement(currentPos, i);
+		actualCheck = bodyPos.isPosEqual(&currentPos);
+
+		ASSERT_EQUAL(expectedCheck, actualCheck);	
+	}
+
+	// Finally, check the tail element
+	thisList.getTailElement(currentPos);
+	actualCheck = bodyPos.isPosEqual(&currentPos);
+
+	ASSERT_EQUAL(expectedCheck, actualCheck);
+}
+
 
 
 
 bool runAllTests(int argc, char const *argv[]) {
 	cute::suite s;
+	
 	
     s.push_back(CUTE(testConstructor));
 	s.push_back(CUTE(testInsertHead_1Element));
@@ -370,9 +423,10 @@ bool runAllTests(int argc, char const *argv[]) {
 	s.push_back(CUTE(testRemoveTail_5Element));
 	
 
-
-
 	//TODO add your test here
+
+	s.push_back(CUTE(testRemoveHeadAndTail_5Element));
+
 
 	cute::xml_file_opener xmlfile(argc, argv);
 	cute::xml_listener<cute::ide_listener<> > lis(xmlfile.out);

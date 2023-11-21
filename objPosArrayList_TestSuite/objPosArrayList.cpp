@@ -47,6 +47,12 @@ void objPosArrayList::insertTail(objPos thisPos)
     listSize++;
     
     List[listSize - 1] = thisPos;
+
+    for (int i = 0; i < listSize; i++)
+    {
+        cout << List[i].getSymbol() << ' ';
+    }
+    cout << endl;
 }
 
 void objPosArrayList::removeHead()
