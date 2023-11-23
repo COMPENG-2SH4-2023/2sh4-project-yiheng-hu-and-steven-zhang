@@ -8,6 +8,7 @@
 using namespace std;
 
 #define DELAY_CONST 100000
+#define DEFAULT_SIZE 50
 
 GameMechs* myGame;      // Global pointer to GameMechs class
 Player* myPlayer;       // Global pointer to Plyer class
@@ -15,7 +16,11 @@ Food* myFood;           // Global pointer to Food class
 
 
 objPos tempFoodPos;     // Reference for the food position
-objPos tempPlyerPos;    // Reference for the player position
+objPos initialPos;      // For the initial food generating
+objPos headPos;         // Reference for the head position in the list
+objPos bodyPos;
+
+objPosArrayList playerList;     // Reference for the player list
 
 
 void Initialize(void);
@@ -54,9 +59,10 @@ void Initialize(void)
     myPlayer = new Player(myGame);
     myFood = new Food();
 
-    tempPlyerPos.setObjPos(myGame->getBoardSizeX() / 2, myGame->getBoardSizeY() / 2, '*');      // Initialize player position for generating
+    initialPos.setObjPos(myGame->getBoardSizeX() / 2, myGame->getBoardSizeY() / 2, '&');
+    
 
-    myFood->generateFood(tempPlyerPos);     // Avoid overlapping initial player position
+    myFood->generateFood(initialPos);     // Avoid overlapping initial player position
     myFood->getFoodPos(tempFoodPos);
 
 }
@@ -76,26 +82,21 @@ void RunLogic(void)
 void DrawScreen(void)
 {
     int i, j;       // i is row, j is column
+    int listIndex;
+    
+    myPlayer->getPlayerPos(playerList);     // Reference to the player list
+    playerList.getHeadElement(headPos);     // Reference to the head position, for debugging
 
     
-    objPos board;       
-    objPos space;
-    objPos newline;
+    bodyPos = objPos(15, 8, '&');
+    playerList.insertTail(bodyPos);     // [15, 8] '&'
+    bodyPos.setObjPos(15, 9, '^');
+    playerList.insertTail(bodyPos);     // [15, 9] '^'  
+    bodyPos.setObjPos(15, 10, '@');
+    playerList.insertTail(bodyPos);
+    bodyPos.setObjPos(15, 11, '$');
+    playerList.insertTail(bodyPos);
     
-
-    myPlayer->getPlayerPos(tempPlyerPos);
-
-    /*
-    myFood->generateFood(tempPlyerPos);      // Avoid overlapping player
-    myFood->getFoodPos(tempFoodPos);
-    */
-    
-    
-    // Assign the same index variable and different characters to these three objects
-    board.setObjPos(j, i, '#');
-    newline.setObjPos(j, i, '\n');
-    space.setObjPos(j, i, ' ');
-
 
     MacUILib_clearScreen();    
 
@@ -103,50 +104,67 @@ void DrawScreen(void)
     {
         for (j = 0; j < myGame->getBoardSizeX(); j++)
         {
+            bool isCellFilled = false;      // Check if the cell is been taken
+
+
             if (i == 0 || i == 14)       // Row 1 and 15
             {
-                MacUILib_printf("%c", board.symbol);
+                MacUILib_printf("#");
+                isCellFilled = true;
 
                 if (j == 29)
                 {
-                    MacUILib_printf("%c", newline.symbol);      // Add space at the last colum
+                    MacUILib_printf("\n");      // Add new line at the last column
+                    isCellFilled = true;
                 }
             }
 
-            else if (i == tempPlyerPos.y && j == tempPlyerPos.x)
+            else if (j == 0)        // Add '#' at each row of the first column, row index in this condition: [1, 13]
             {
-                MacUILib_printf("%c", tempPlyerPos.symbol);      // Add player position
+                MacUILib_printf("#");
+                isCellFilled = true;
             }
+
+            else if (j == 29)       // Add '#' and new line at each row of the last column, row index in this condition: [1, 13]
+            {
+                MacUILib_printf("#\n");
+                isCellFilled = true;
+            }
+
+
 
             else if (i == tempFoodPos.y && j == tempFoodPos.x)
             {
                 MacUILib_printf("%c", tempFoodPos.symbol);      // Add food position
+                isCellFilled = true;
             }
 
-            else
+            for (listIndex = 0; listIndex < playerList.getSize(); listIndex++)
             {
-                if (j == 0)      // Add '#' at each row of the first column
-                {
-                    MacUILib_printf("%c", board.symbol);
-                }
+                playerList.getElement(bodyPos, listIndex);      // Access each element from the head
 
-                else if (j == 29)       // Add '#' and new line at each row of the last column
+                if (i == bodyPos.y && j == bodyPos.x)
                 {
-                    MacUILib_printf("%c%c", board.symbol, newline.symbol);
+                    MacUILib_printf("%c", bodyPos.symbol);      // Add element position
+                    isCellFilled = true;
+                    break;
                 }
+            }
 
-                else
-                {
-                    MacUILib_printf("%c", space.symbol);    // Add space
-                }
+
+            // Only print space when the cell is not been taken
+            if (!isCellFilled)
+            {
+                MacUILib_printf(" ");
             }
         }
     }
 
     MacUILib_printf("Your score is: %d\n", myGame->getScore());
+    MacUILib_printf("List size: %d\n", playerList.getSize());
     MacUILib_printf("Food position: [%d %d]\n", tempFoodPos.x, tempFoodPos.y);
-    MacUILib_printf("Player position: [%d %d]\n", tempPlyerPos.x, tempPlyerPos.y);
-
+    MacUILib_printf("Head position %c: [%d %d]\n", headPos.symbol, headPos.x, headPos.y);
+    MacUILib_printf("Body position %c: [%d %d]\n", bodyPos.symbol, bodyPos.x, bodyPos.y);
 }
 
 void LoopDelay(void)
@@ -156,8 +174,6 @@ void LoopDelay(void)
 
 
 void CleanUp(void)
-{
-    //MacUILib_clearScreen();    
-  
+{ 
     MacUILib_uninit();
 }

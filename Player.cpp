@@ -6,22 +6,27 @@ Player::Player(GameMechs* thisGMRef)
 {
     mainGameMechsRef = thisGMRef;
     myDir = STOP;
+    playerPosList = new objPosArrayList();
 
     // more actions to be included
-    playerPos.setObjPos(mainGameMechsRef->getBoardSizeX() / 2, mainGameMechsRef->getBoardSizeY() / 2, '*');
+    objPos initialPos;
+
+    initialPos.setObjPos(mainGameMechsRef->getBoardSizeX() / 2, mainGameMechsRef->getBoardSizeY() / 2, '*');
+
+    playerPosList->insertHead(initialPos);
 }
 
 
 Player::~Player()
 {
-    delete mainGameMechsRef;
+    delete playerPosList;
 }
 
-void Player::getPlayerPos(objPos &returnPos)
+void Player::getPlayerPos(objPosArrayList &returnPosList)
 {
     // return the reference to the playerPos arrray list
 
-    returnPos.setObjPos(playerPos.x, playerPos.y, playerPos.symbol);
+    returnPosList = *playerPosList;
 }
 
 void Player::updatePlayerDir()
@@ -71,6 +76,11 @@ void Player::updatePlayerDir()
 
 void Player::movePlayer()
 {
+    objPos headPos;
+    objPos nextPos;
+    playerPosList->getHeadElement(headPos);
+
+
     // PPA3 Finite State Machine logic
     switch(myDir)
     {
@@ -78,35 +88,47 @@ void Player::movePlayer()
             break;
 
         case UP: 
-            playerPos.y--;
-            if (playerPos.y == 0)
+            if (headPos.y == 1)     // Head position is 1 ahead next position, therefore start from index 1
             {
-                playerPos.y = 13;
+                headPos.y = 14;     // Same reason, so that start from last index
             }
+
+            nextPos.setObjPos(headPos.x, headPos.y - 1, headPos.symbol);
+            playerPosList->insertHead(nextPos);
+            playerPosList->removeTail();
             break;
 
         case LEFT:
-            playerPos.x--;
-            if (playerPos.x == 0)
+            if (headPos.x == 1)
             {
-                playerPos.x = 28;
+                headPos.x = 29;
             }
+
+            nextPos.setObjPos(headPos.x - 1, headPos.y, headPos.symbol);
+            playerPosList->insertHead(nextPos);
+            playerPosList->removeTail();
             break;
 
         case DOWN:
-            playerPos.y++;
-            if (playerPos.y == 14)
+            if (headPos.y == 13)
             {
-                playerPos.y = 1;
+                headPos.y = 0;
             }
+
+            nextPos.setObjPos(headPos.x, headPos.y + 1, headPos.symbol);
+            playerPosList->insertHead(nextPos);
+            playerPosList->removeTail();
             break;
 
         case RIGHT:
-            playerPos.x++;
-            if (playerPos.x == 29)
+            if (headPos.x == 28)
             {
-                playerPos.x = 1;
+                headPos.x = 0;
             }
+
+            nextPos.setObjPos(headPos.x + 1, headPos.y, headPos.symbol);
+            playerPosList->insertHead(nextPos);
+            playerPosList->removeTail();
             break;
             
         default:  // Add default case even if no actions will be taken (debugginh convenience)
