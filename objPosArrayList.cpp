@@ -26,11 +26,7 @@ objPosArrayList::objPosArrayList(const objPosArrayList &list)
 
 objPosArrayList::~objPosArrayList()
 {
-    for (int i = 0; i < arrayCapacity; i++)
-    {
-        delete [] &List[i];
-    }
-    delete [] &List;
+    delete [] List;
 }
 
 int objPosArrayList::getSize()

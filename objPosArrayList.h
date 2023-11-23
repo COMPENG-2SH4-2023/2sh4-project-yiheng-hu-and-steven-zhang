@@ -4,6 +4,7 @@
 #define ARRAY_MAX_CAP 200
 
 #include "objPos.h"
+#include "MacUILib.h"
 #include <iostream>
 
 using namespace std;

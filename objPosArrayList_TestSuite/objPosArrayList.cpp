@@ -28,11 +28,14 @@ int objPosArrayList::getSize()
 
 void objPosArrayList::insertHead(objPos thisPos)
 {
+    cout << "Old size: " << listSize << endl;
+
     if (listSize == arrayCapacity)       // Check if the array is full
     {
         cout << "Array full..." << endl;
         return;
     }
+
 
     // Pushing all elements back by one slot, overwriting the value in i+1 with that in i
     for (int i = listSize; i > 0; i--)
@@ -42,6 +45,8 @@ void objPosArrayList::insertHead(objPos thisPos)
     
     listSize++;
     List[0] = thisPos;
+
+    cout << "New size: " << listSize << endl;
 }
 
 void objPosArrayList::insertTail(objPos thisPos)

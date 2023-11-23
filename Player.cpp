@@ -77,9 +77,10 @@ void Player::updatePlayerDir()
 void Player::movePlayer()
 {
     objPos headPos;
-    objPos nextPos;
-    playerPosList->getHeadElement(headPos);
+    objPos nextHeadPos;
 
+    playerPosList->getHeadElement(headPos);
+    
 
     // PPA3 Finite State Machine logic
     switch(myDir)
@@ -90,44 +91,60 @@ void Player::movePlayer()
         case UP: 
             if (headPos.y == 1)     // Head position is 1 ahead next position, therefore start from index 1
             {
-                headPos.y = 14;     // Same reason, so that start from last index
+                headPos.y = 13;     // Same reason, so that start from last index
+            }
+            else
+            {
+                headPos.y--;
             }
 
-            nextPos.setObjPos(headPos.x, headPos.y - 1, headPos.symbol);
-            playerPosList->insertHead(nextPos);
+            nextHeadPos.setObjPos(headPos.x, headPos.y, headPos.symbol);
+            playerPosList->insertHead(nextHeadPos);
             playerPosList->removeTail();
             break;
 
         case LEFT:
             if (headPos.x == 1)
             {
-                headPos.x = 29;
+                headPos.x = 28;
+            }
+            else
+            {
+                headPos.x--;
             }
 
-            nextPos.setObjPos(headPos.x - 1, headPos.y, headPos.symbol);
-            playerPosList->insertHead(nextPos);
+            nextHeadPos.setObjPos(headPos.x, headPos.y, headPos.symbol);
+            playerPosList->insertHead(nextHeadPos);
             playerPosList->removeTail();
             break;
 
         case DOWN:
             if (headPos.y == 13)
             {
-                headPos.y = 0;
+                headPos.y = 1;
+            }
+            else
+            {
+                headPos.y++;
             }
 
-            nextPos.setObjPos(headPos.x, headPos.y + 1, headPos.symbol);
-            playerPosList->insertHead(nextPos);
+            nextHeadPos.setObjPos(headPos.x, headPos.y, headPos.symbol);
+            playerPosList->insertHead(nextHeadPos);
             playerPosList->removeTail();
             break;
 
         case RIGHT:
             if (headPos.x == 28)
             {
-                headPos.x = 0;
+                headPos.x = 1;
+            }
+            else
+            {
+                headPos.x++;
             }
 
-            nextPos.setObjPos(headPos.x + 1, headPos.y, headPos.symbol);
-            playerPosList->insertHead(nextPos);
+            nextHeadPos.setObjPos(headPos.x, headPos.y, headPos.symbol);
+            playerPosList->insertHead(nextHeadPos);
             playerPosList->removeTail();
             break;
             
@@ -135,6 +152,5 @@ void Player::movePlayer()
             MacUILib_printf("Unknown Mode\n");
             break;
     }
-    
 }
 
