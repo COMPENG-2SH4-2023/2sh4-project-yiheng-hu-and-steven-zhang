@@ -61,12 +61,13 @@ void Initialize(void)
     myPlayer->getPlayerPos(playerList);     // Reference to the player list
     playerList.getHeadElement(headPos);     // Reference to the head position, for initial food generation
 
+    /*
     for (int i = 1; i < 5; i++)
     {
         bodyPos.setObjPos(headPos.x, headPos.y + i, '8');
         playerList.insertTail(bodyPos);
     }
-
+    */
 
     myFood->generateFood(headPos);     // Avoid overlapping initial head position
     myFood->getFoodPos(tempFoodPos);
