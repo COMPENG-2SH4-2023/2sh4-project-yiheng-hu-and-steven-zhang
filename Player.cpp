@@ -109,22 +109,21 @@ void Player::movePlayer()
                 headPos.y--;
             }
 
-            
+            checkSelfCollision(headPos);
+
             if (headPos.x == playerfoodPos.x && headPos.y == playerfoodPos.y)       // Check food consumption
             {
-                nextHeadPos.setObjPos(headPos.x, headPos.y, headPos.symbol);
-                playerPosList->insertHead(nextHeadPos);
+                mainGameMechsRef->incrementScore();
 
-                playerFood->generateFood(headPos);      // Generate new food
+                updateHead(headPos, nextHeadPos);
+                playerFood->generateFood(playerPosList);      // Generate new food
             }
 
             else
             {
-                nextHeadPos.setObjPos(headPos.x, headPos.y, headPos.symbol);
-                playerPosList->insertHead(nextHeadPos);
+                updateHead(headPos, nextHeadPos);
                 playerPosList->removeTail();
             }
-
             break;
 
 
@@ -138,21 +137,21 @@ void Player::movePlayer()
                 headPos.x--;
             }
 
+            checkSelfCollision(headPos);
+
             if (headPos.x == playerfoodPos.x && headPos.y == playerfoodPos.y)
             {
-                nextHeadPos.setObjPos(headPos.x, headPos.y, headPos.symbol);
-                playerPosList->insertHead(nextHeadPos);
+                mainGameMechsRef->incrementScore();
 
-                playerFood->generateFood(headPos);
+                updateHead(headPos, nextHeadPos);
+                playerFood->generateFood(playerPosList);
             }
 
             else
             {
-                nextHeadPos.setObjPos(headPos.x, headPos.y, headPos.symbol);
-                playerPosList->insertHead(nextHeadPos);
+                updateHead(headPos, nextHeadPos);
                 playerPosList->removeTail();
             }
-
             break;
 
         case DOWN:
@@ -165,21 +164,21 @@ void Player::movePlayer()
                 headPos.y++;
             }
 
+            checkSelfCollision(headPos);
+
             if (headPos.x == playerfoodPos.x && headPos.y == playerfoodPos.y)
             {
-                nextHeadPos.setObjPos(headPos.x, headPos.y, headPos.symbol);
-                playerPosList->insertHead(nextHeadPos);
+                mainGameMechsRef->incrementScore();
 
-                playerFood->generateFood(headPos);
+                updateHead(headPos, nextHeadPos);
+                playerFood->generateFood(playerPosList);
             }
 
             else
             {
-                nextHeadPos.setObjPos(headPos.x, headPos.y, headPos.symbol);
-                playerPosList->insertHead(nextHeadPos);
+                updateHead(headPos, nextHeadPos);
                 playerPosList->removeTail();
             }
-
             break;
 
         case RIGHT:
@@ -192,26 +191,55 @@ void Player::movePlayer()
                 headPos.x++;
             }
 
+            checkSelfCollision(headPos);
+
             if (headPos.x == playerfoodPos.x && headPos.y == playerfoodPos.y)
             {
-                nextHeadPos.setObjPos(headPos.x, headPos.y, headPos.symbol);
-                playerPosList->insertHead(nextHeadPos);
+                mainGameMechsRef->incrementScore();
 
-                playerFood->generateFood(headPos);
+                updateHead(headPos, nextHeadPos);
+                playerFood->generateFood(playerPosList);
             }
 
             else
             {
-                nextHeadPos.setObjPos(headPos.x, headPos.y, headPos.symbol);
-                playerPosList->insertHead(nextHeadPos);
+                updateHead(headPos, nextHeadPos);
                 playerPosList->removeTail();
             }
-
             break;
             
         default:  // Add default case even if no actions will be taken (debugginh convenience)
             MacUILib_printf("Unknown Mode\n");
             break;
     }
+}
+
+
+// Update head position each time moving
+void Player::updateHead(objPos headPos, objPos nextHead)
+{
+    nextHead.setObjPos(headPos.x, headPos.y, headPos.symbol);
+    playerPosList->insertHead(nextHead);
+}
+
+
+bool Player::checkSelfCollision(objPos headPos)
+{
+    int size = playerPosList->getSize();        // List size
+    objPos bodyPos;     // Reference for the body position, start from index 1
+
+    for (int i = 1; i < size; i++)
+    {
+        playerPosList->getElement(bodyPos, i);
+
+        if (headPos.isPosEqual(&bodyPos))       // Check the collosion fpr each body element
+        {
+            mainGameMechsRef->setLoseFlag();
+            mainGameMechsRef->setExitTrue();
+            return true;
+        }
+    }
+
+    return false;
 }
 

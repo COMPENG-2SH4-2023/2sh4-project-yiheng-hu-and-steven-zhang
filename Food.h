@@ -13,7 +13,7 @@ class Food
         Food();
         ~Food();
 
-        void generateFood(objPos blockOff); 
+        void generateFood(objPosArrayList* thisList); 
 
         void getFoodPos(objPos &returnPos);     // Reference for food position
         objPos getFood();       // Return food position

@@ -13,9 +13,11 @@ Food::~Food()
 
 
 
-void Food::generateFood(objPos blockOff)
+void Food::generateFood(objPosArrayList* thisList)
 {
     int done = 0;
+    int size = thisList->getSize();
+    objPos foodBodyPos;
 
     srand(time(NULL));
 
@@ -25,15 +27,16 @@ void Food::generateFood(objPos blockOff)
         foodPos.x = 1 + rand() % 28;        // range[1, 28]
         foodPos.y = 1 + rand() % 13;        // range[1, 13]
 
-        if (foodPos.isPosEqual(&blockOff))
+        for (int i = 0; i < size; i++)
         {
-            continue;
-        }
+            thisList->getElement(foodBodyPos, i);
 
-        else
-        {
-            done = 1;
+            if (foodPos.isPosEqual(&foodBodyPos))
+            {
+                continue;
+            }
         }
+        done = 1;
     }
 }
 

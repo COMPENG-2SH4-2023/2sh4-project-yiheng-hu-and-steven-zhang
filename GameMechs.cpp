@@ -29,8 +29,7 @@ GameMechs::GameMechs(int boardX, int boardY)
 
 GameMechs::~GameMechs()
 {
-    delete &boardSizeX;
-    delete &boardSizeY;
+    
 }
 
 
