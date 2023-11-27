@@ -2,6 +2,7 @@
 # COE2SH4-Final Project
 
 Student 1 information:
+
 Section: [L09]
 
 MacID: [zhany708]
@@ -9,6 +10,7 @@ MacID: [zhany708]
 StudentID: [400297440]
 
 Student 2 information:
+
 Section: [L0x]
 
 MacID: [xxx]
