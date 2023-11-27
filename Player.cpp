@@ -86,10 +86,12 @@ void Player::movePlayer()
 {
     objPos headPos;
     objPos nextHeadPos;
-    objPos playerfoodPos;
+    objPos playerFoodPos;
+    objPosArrayList* playerfoodList;        // Reference to the bucket
 
-    //playerFood->getFoodPos(playerfoodPos);
-    playerfoodPos = playerFood->getFood();
+    
+    playerfoodList = playerFood->getBucket();
+
     playerPosList->getHeadElement(headPos);
     
 
@@ -111,18 +113,31 @@ void Player::movePlayer()
 
             checkSelfCollision(headPos);
 
-            if (headPos.x == playerfoodPos.x && headPos.y == playerfoodPos.y)       // Check food consumption
+            for (int bucketIndex = 0; bucketIndex < playerfoodList->getSize(); bucketIndex++)
             {
-                mainGameMechsRef->incrementScore();
+                playerfoodList->getElement(playerFoodPos, bucketIndex);
+                if (headPos.x == playerFoodPos.x && headPos.y == playerFoodPos.y)       // Check food consumption
+                {
+                    if (playerFoodPos.getSymbol() == '0')       // Regular consumption
+                    {
+                        mainGameMechsRef->incrementScore();     
+                    }
 
-                updateHead(headPos, nextHeadPos);
-                playerFood->generateFood(playerPosList);      // Generate new food
-            }
+                    else
+                    {
+                        mainGameMechsRef->bonusIncrementScore();    // Special food cunsumption
+                        playerPosList->removeTail();    
+                    }
+                    
+                    updateHead(headPos, nextHeadPos);
+                    playerFood->generateFood(playerPosList);      // Generate new food
+                }
 
-            else
-            {
-                updateHead(headPos, nextHeadPos);
-                playerPosList->removeTail();
+                else
+                {
+                    updateHead(headPos, nextHeadPos);
+                    playerPosList->removeTail();
+                }
             }
             break;
 
@@ -139,18 +154,31 @@ void Player::movePlayer()
 
             checkSelfCollision(headPos);
 
-            if (headPos.x == playerfoodPos.x && headPos.y == playerfoodPos.y)
+            for (int bucketIndex = 0; bucketIndex < playerfoodList->getSize(); bucketIndex++)
             {
-                mainGameMechsRef->incrementScore();
+                playerfoodList->getElement(playerFoodPos, bucketIndex);
+                if (headPos.x == playerFoodPos.x && headPos.y == playerFoodPos.y)       // Check food consumption
+                {
+                    if (playerFoodPos.getSymbol() == '0')
+                    {
+                        mainGameMechsRef->incrementScore();
+                    }
 
-                updateHead(headPos, nextHeadPos);
-                playerFood->generateFood(playerPosList);
-            }
+                    else
+                    {
+                        mainGameMechsRef->bonusIncrementScore();
+                        playerPosList->removeTail();
+                    }
+                    
+                    updateHead(headPos, nextHeadPos);
+                    playerFood->generateFood(playerPosList);      // Generate new food
+                }
 
-            else
-            {
-                updateHead(headPos, nextHeadPos);
-                playerPosList->removeTail();
+                else
+                {
+                    updateHead(headPos, nextHeadPos);
+                    playerPosList->removeTail();
+                }
             }
             break;
 
@@ -166,18 +194,31 @@ void Player::movePlayer()
 
             checkSelfCollision(headPos);
 
-            if (headPos.x == playerfoodPos.x && headPos.y == playerfoodPos.y)
+            for (int bucketIndex = 0; bucketIndex < playerfoodList->getSize(); bucketIndex++)
             {
-                mainGameMechsRef->incrementScore();
+                playerfoodList->getElement(playerFoodPos, bucketIndex);
+                if (headPos.x == playerFoodPos.x && headPos.y == playerFoodPos.y)       // Check food consumption
+                {
+                    if (playerFoodPos.getSymbol() == '0')
+                    {
+                        mainGameMechsRef->incrementScore();
+                    }
 
-                updateHead(headPos, nextHeadPos);
-                playerFood->generateFood(playerPosList);
-            }
+                    else
+                    {
+                        mainGameMechsRef->bonusIncrementScore();
+                        playerPosList->removeTail();
+                    }
+                    
+                    updateHead(headPos, nextHeadPos);
+                    playerFood->generateFood(playerPosList);      // Generate new food
+                }
 
-            else
-            {
-                updateHead(headPos, nextHeadPos);
-                playerPosList->removeTail();
+                else
+                {
+                    updateHead(headPos, nextHeadPos);
+                    playerPosList->removeTail();
+                }
             }
             break;
 
@@ -193,18 +234,31 @@ void Player::movePlayer()
 
             checkSelfCollision(headPos);
 
-            if (headPos.x == playerfoodPos.x && headPos.y == playerfoodPos.y)
+            for (int bucketIndex = 0; bucketIndex < playerfoodList->getSize(); bucketIndex++)
             {
-                mainGameMechsRef->incrementScore();
+                playerfoodList->getElement(playerFoodPos, bucketIndex);
+                if (headPos.x == playerFoodPos.x && headPos.y == playerFoodPos.y)       // Check food consumption
+                {
+                    if (playerFoodPos.getSymbol() == '0')
+                    {
+                        mainGameMechsRef->incrementScore();
+                    }
 
-                updateHead(headPos, nextHeadPos);
-                playerFood->generateFood(playerPosList);
-            }
+                    else
+                    {
+                        mainGameMechsRef->bonusIncrementScore();
+                        playerPosList->removeTail();
+                    }
+                    
+                    updateHead(headPos, nextHeadPos);
+                    playerFood->generateFood(playerPosList);      // Generate new food
+                }
 
-            else
-            {
-                updateHead(headPos, nextHeadPos);
-                playerPosList->removeTail();
+                else
+                {
+                    updateHead(headPos, nextHeadPos);
+                    playerPosList->removeTail();
+                }
             }
             break;
             

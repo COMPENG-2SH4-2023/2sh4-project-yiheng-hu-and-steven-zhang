@@ -102,4 +102,11 @@ void GameMechs::incrementScore()
     score++;
 }
 
+void GameMechs::bonusIncrementScore()
+{
+    for (int i = 1; i <= 10; i++)
+    {
+        score++;
+    }
+}
 
