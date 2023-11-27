@@ -14,7 +14,9 @@ class Food
         ~Food();
 
         void generateFood(objPos blockOff); 
-        void getFoodPos(objPos &returnPos);
+
+        void getFoodPos(objPos &returnPos);     // Reference for food position
+        objPos getFood();       // Return food position
 
     private:
         objPos foodPos;

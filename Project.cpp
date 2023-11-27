@@ -8,18 +8,17 @@
 using namespace std;
 
 #define DELAY_CONST 100000
-#define DEFAULT_SIZE 50
+
 
 GameMechs* myGame;      // Global pointer to GameMechs class
 Player* myPlayer;       // Global pointer to Plyer class
 Food* myFood;           // Global pointer to Food class
+objPosArrayList* playerList;     // Global pointer to the player list
 
 
 objPos tempFoodPos;     // Reference for the food position
 objPos headPos;         // Reference for the head position in the list
-objPos bodyPos;
-
-objPosArrayList playerList;     // Reference for the player list
+objPos bodyPos;         // Reference for the body position
 
 
 void Initialize(void);
@@ -55,19 +54,21 @@ void Initialize(void)
     MacUILib_clearScreen();
 
     myGame = new GameMechs(30, 15);
-    myPlayer = new Player(myGame);
     myFood = new Food();
+    myPlayer = new Player(myGame, myFood);
 
-    myPlayer->getPlayerPos(playerList);     // Reference to the player list
-    playerList.getHeadElement(headPos);     // Reference to the head position, for initial food generation
+    playerList = myPlayer->getPlayerList();
+    playerList->getHeadElement(headPos);     // Reference to the head position, for initial food generation
 
     /*
+    // Initialize 4 body elements
     for (int i = 1; i < 5; i++)
     {
         bodyPos.setObjPos(headPos.x, headPos.y + i, '8');
-        playerList.insertTail(bodyPos);
+        playerList->insertTail(bodyPos);
     }
     */
+
 
     myFood->generateFood(headPos);     // Avoid overlapping initial head position
     myFood->getFoodPos(tempFoodPos);
@@ -87,7 +88,7 @@ void RunLogic(void)
     myPlayer->updatePlayerDir();
     myPlayer->movePlayer();
 
-    playerList.getHeadElement(headPos);     // Reference to the head position, for debugging
+    playerList->getHeadElement(headPos);     // Reference to the head position, for debugging
 }
 
 
@@ -133,27 +134,30 @@ void DrawScreen(void)
             }
 
 
-            /*
+            
+
+
             if (i == headPos.y && j == headPos.x)
             {
-                MacUILib_printf("%c", headPos.symbol);      // Add food position
+                MacUILib_printf("%c", headPos.symbol);      // Add head position
                 isCellFilled = true;
             }
-            */
+            
 
             else if (i == tempFoodPos.y && j == tempFoodPos.x)
             {
                 MacUILib_printf("%c", tempFoodPos.symbol);      // Add food position
                 isCellFilled = true;
             }
+            
 
-            for (listIndex = 0; listIndex < playerList.getSize(); listIndex++)
+            for (listIndex = 1; listIndex < playerList->getSize(); listIndex++)
             {
-                playerList.getElement(bodyPos, listIndex);      // Access each element from the second element
+                playerList->getElement(bodyPos, listIndex);      // Access each element from the second element
 
                 if (i == bodyPos.y && j == bodyPos.x)
                 {
-                    MacUILib_printf("%c", bodyPos.symbol);      // Add element position
+                    MacUILib_printf("%c", bodyPos.symbol);      // Add body position
                     isCellFilled = true;
                     break;
                 }
@@ -170,15 +174,15 @@ void DrawScreen(void)
     }
 
     MacUILib_printf("Your score is: %d\n", myGame->getScore());
-    MacUILib_printf("List size: %d\n", playerList.getSize());
+    MacUILib_printf("List size: %d\n", playerList->getSize());
     MacUILib_printf("Food position %c: [%d %d]\n", tempFoodPos.symbol, tempFoodPos.x, tempFoodPos.y);
 
     MacUILib_printf("\n");
     MacUILib_printf("Head position %c: [%d %d]\n", headPos.symbol, headPos.x, headPos.y);
    
-    for (int i = 1; i < playerList.getSize(); i++)
+    for (int i = 1; i < playerList->getSize(); i++)
     {
-        playerList.getElement(bodyPos, i);
+        playerList->getElement(bodyPos, i);
         MacUILib_printf("Body %d position %c: [%d %d]\n", i, bodyPos.symbol, bodyPos.x, bodyPos.y);
     }
 }

@@ -2,9 +2,10 @@
 
 
 
-Player::Player(GameMechs* thisGMRef)
+Player::Player(GameMechs* thisGMRef, Food* thisFood)
 {
     mainGameMechsRef = thisGMRef;
+    playerFood = thisFood;
     myDir = STOP;
     playerPosList = new objPosArrayList();
 
@@ -28,6 +29,13 @@ void Player::getPlayerPos(objPosArrayList &returnPosList)
 
     returnPosList = *playerPosList;
 }
+
+objPosArrayList* Player::getPlayerList()
+{
+    return playerPosList;
+}
+
+
 
 void Player::updatePlayerDir()
 {
@@ -78,7 +86,10 @@ void Player::movePlayer()
 {
     objPos headPos;
     objPos nextHeadPos;
+    objPos playerfoodPos;
 
+    //playerFood->getFoodPos(playerfoodPos);
+    playerfoodPos = playerFood->getFood();
     playerPosList->getHeadElement(headPos);
     
 
@@ -98,10 +109,24 @@ void Player::movePlayer()
                 headPos.y--;
             }
 
-            nextHeadPos.setObjPos(headPos.x, headPos.y, headPos.symbol);
-            playerPosList->insertHead(nextHeadPos);
-            playerPosList->removeTail();
+            
+            if (headPos.x == playerfoodPos.x && headPos.y == playerfoodPos.y)       // Check food consumption
+            {
+                nextHeadPos.setObjPos(headPos.x, headPos.y, headPos.symbol);
+                playerPosList->insertHead(nextHeadPos);
+
+                playerFood->generateFood(headPos);      // Generate new food
+            }
+
+            else
+            {
+                nextHeadPos.setObjPos(headPos.x, headPos.y, headPos.symbol);
+                playerPosList->insertHead(nextHeadPos);
+                playerPosList->removeTail();
+            }
+
             break;
+
 
         case LEFT:
             if (headPos.x == 1)
@@ -113,9 +138,21 @@ void Player::movePlayer()
                 headPos.x--;
             }
 
-            nextHeadPos.setObjPos(headPos.x, headPos.y, headPos.symbol);
-            playerPosList->insertHead(nextHeadPos);
-            playerPosList->removeTail();
+            if (headPos.x == playerfoodPos.x && headPos.y == playerfoodPos.y)
+            {
+                nextHeadPos.setObjPos(headPos.x, headPos.y, headPos.symbol);
+                playerPosList->insertHead(nextHeadPos);
+
+                playerFood->generateFood(headPos);
+            }
+
+            else
+            {
+                nextHeadPos.setObjPos(headPos.x, headPos.y, headPos.symbol);
+                playerPosList->insertHead(nextHeadPos);
+                playerPosList->removeTail();
+            }
+
             break;
 
         case DOWN:
@@ -128,9 +165,21 @@ void Player::movePlayer()
                 headPos.y++;
             }
 
-            nextHeadPos.setObjPos(headPos.x, headPos.y, headPos.symbol);
-            playerPosList->insertHead(nextHeadPos);
-            playerPosList->removeTail();
+            if (headPos.x == playerfoodPos.x && headPos.y == playerfoodPos.y)
+            {
+                nextHeadPos.setObjPos(headPos.x, headPos.y, headPos.symbol);
+                playerPosList->insertHead(nextHeadPos);
+
+                playerFood->generateFood(headPos);
+            }
+
+            else
+            {
+                nextHeadPos.setObjPos(headPos.x, headPos.y, headPos.symbol);
+                playerPosList->insertHead(nextHeadPos);
+                playerPosList->removeTail();
+            }
+
             break;
 
         case RIGHT:
@@ -143,9 +192,21 @@ void Player::movePlayer()
                 headPos.x++;
             }
 
-            nextHeadPos.setObjPos(headPos.x, headPos.y, headPos.symbol);
-            playerPosList->insertHead(nextHeadPos);
-            playerPosList->removeTail();
+            if (headPos.x == playerfoodPos.x && headPos.y == playerfoodPos.y)
+            {
+                nextHeadPos.setObjPos(headPos.x, headPos.y, headPos.symbol);
+                playerPosList->insertHead(nextHeadPos);
+
+                playerFood->generateFood(headPos);
+            }
+
+            else
+            {
+                nextHeadPos.setObjPos(headPos.x, headPos.y, headPos.symbol);
+                playerPosList->insertHead(nextHeadPos);
+                playerPosList->removeTail();
+            }
+
             break;
             
         default:  // Add default case even if no actions will be taken (debugginh convenience)

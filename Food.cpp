@@ -8,7 +8,7 @@ Food::Food()
 
 Food::~Food()
 {
-    delete &foodPos;
+    //delete &foodPos;
 }
 
 
@@ -36,6 +36,13 @@ void Food::generateFood(objPos blockOff)
         }
     }
 }
+
+
+objPos Food::getFood()
+{
+    return foodPos;
+}
+
 
 void Food::getFoodPos(objPos &returnPos)
 {

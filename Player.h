@@ -5,6 +5,7 @@
 #include "objPos.h"
 #include "objPosArrayList.h"
 #include "MacUILib.h"
+#include "Food.h"
 
 class Player
 {
@@ -17,11 +18,13 @@ class Player
     public:
         enum Dir {UP, DOWN, LEFT, RIGHT, STOP};  // This is the direction state
 
-        Player(GameMechs* thisGMRef);
+        Player(GameMechs* thisGMRef, Food* thisFood);
         ~Player();
+        
 
-        //void getPlayerPos(objPos &returnPos); // Upgrade this in iteration 3.
-        void getPlayerPos(objPosArrayList &returnPosList);
+        void getPlayerPos(objPosArrayList &returnPosList);      // Reference for the player list
+        objPosArrayList* getPlayerList();       // Return player list
+
         void updatePlayerDir();
         void movePlayer();
 
@@ -32,6 +35,7 @@ class Player
 
         // Need a reference to the Main Game Mechanisms
         GameMechs* mainGameMechsRef;
+        Food* playerFood; 
 };
 
 #endif
