@@ -14,12 +14,7 @@ GameMechs* myGame;      // Global pointer to GameMechs class
 Player* myPlayer;       // Global pointer to Plyer class
 Food* myFood;           // Global pointer to Food class
 objPosArrayList* playerList;     // Global pointer to the player list
-objPosArrayList* tempFoodList;
 
-
-objPos headPos;         // Reference for the head position in the list
-objPos bodyPos;         // Reference for the body position
-objPos tempFoodPos;     // Reference for food position
 
 
 void Initialize(void);
@@ -77,11 +72,6 @@ void RunLogic(void)
 {
     myPlayer->updatePlayerDir();
     myPlayer->movePlayer();
-
-    playerList->getHeadElement(headPos);        // Get new head position in each game loop
-    
-    tempFoodList = myFood->getBucket();            // Get new food position in each game loop
-    tempFoodList->getHeadElement(tempFoodPos);
 }
 
 
@@ -90,6 +80,17 @@ void DrawScreen(void)
 {
     int i, j;       // i is row, j is column
     int listIndex;
+
+    objPosArrayList* tempFoodList;   // Pointer to the food bucket
+
+    objPos headPos;         // Reference for the head position in the list
+    objPos snakePos;        // Reference for the body position
+    objPos tempFoodPos;     // Reference for food position
+
+    playerList->getHeadElement(headPos);        // Get new head position in each game loop
+
+    tempFoodList = myFood->getBucket();             // Get new food list in each game loop
+    tempFoodList->getHeadElement(tempFoodPos);      // Get new food position
     
 
     MacUILib_clearScreen();    
@@ -127,14 +128,7 @@ void DrawScreen(void)
             }
 
 
-            
 
-            if (i == headPos.y && j == headPos.x)
-            {
-                MacUILib_printf("%c", headPos.symbol);      // Add head position
-                isCellFilled = true;
-            }
-            
 
             else if (i == tempFoodPos.y && j == tempFoodPos.x)
             {
@@ -143,13 +137,13 @@ void DrawScreen(void)
             }
             
 
-            for (listIndex = 1; listIndex < playerList->getSize(); listIndex++)
+            for (listIndex = 0; listIndex < playerList->getSize(); listIndex++)
             {
-                playerList->getElement(bodyPos, listIndex);      // Access each element from the second element
+                playerList->getElement(snakePos, listIndex);      // Access each element from the head
 
-                if (i == bodyPos.y && j == bodyPos.x)
+                if (i == snakePos.y && j == snakePos.x)
                 {
-                    MacUILib_printf("%c", bodyPos.symbol);      // Add body position
+                    MacUILib_printf("%c", snakePos.symbol);      // Add snake position
                     isCellFilled = true;
                     break;
                 }
@@ -169,7 +163,7 @@ void DrawScreen(void)
 
     if (myGame->getExitFlagStatus() == true && myGame->getLoseFlagStates() == true)     // Lose message
     {
-        MacUILib_printf("\nYou lost the game, keep up!\n");
+        MacUILib_printf("\nYou lose the game, keep up!\n");
     }
 
     if (myGame->getExitFlagStatus() == true && myGame->getLoseFlagStates() == false)     // Manually end game message
