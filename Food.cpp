@@ -4,13 +4,11 @@
 Food::Food()
 {
     objPos initialHeadPos;
-    objPos initialBodyPos;
-    initialHeadPos.setObjPos(5, 5, '0');
-    initialBodyPos.setObjPos(10, 10, '1');
+    initialHeadPos.setObjPos(5, 5, '1');
 
     foodBucket = new objPosArrayList();
+
     foodBucket->insertHead(initialHeadPos);
-    foodBucket->insertTail(initialBodyPos);
 }
 
 Food::~Food()
@@ -22,71 +20,48 @@ Food::~Food()
 
 void Food::generateFood(objPosArrayList* thisList)
 {
-    int newFoodPos_x, newFoodPos_y, newSecondPos_x, newSecondPos_y;
-    char symbol;
     int done = 0;
     int snakeSize = thisList->getSize();
     int bucketSize = foodBucket->getSize();
 
-    objPos foodPos;
-    objPos newFoodPos;
-    objPos newSecondPos;
-
     objPos snakeBodyPos;
+    objPos newFoodPos;
+    objPos oldFoodPos;
 
-    foodBucket->getHeadElement(foodPos);        // Get the old head of the bucket first
+    newFoodPos.setObjPos(1, 1, '0');
+
 
     srand(time(NULL));
 
 
     while (!done)
     {
+        newFoodPos.x = 1 + rand() % 28;        // range[1, 28]
+        newFoodPos.y = 1 + rand() % 13;        // range[1, 13]
 
-        newFoodPos_x = 1 + rand() % 28;        // range[1, 28]
-        newFoodPos_y = 1 + rand() % 13;        // range[1, 13]
 
-        newSecondPos_x = 1 + rand() % 28;  
-        newSecondPos_y = 1 + rand() % 13;
 
-        symbol = 33 + rand() % 94;  // range[33, 33 + 93 = 126]
-
-        newFoodPos.setObjPos(newFoodPos_x, newFoodPos_y, '0');
-        newSecondPos.setObjPos(newSecondPos_x, newSecondPos_y, symbol);
-
-        if (symbol == '0')
+        for (int bucketIndex = 0; bucketIndex < bucketSize; bucketIndex++)
         {
-            continue;
-        }
+            foodBucket->getElement(oldFoodPos, bucketIndex);
 
-        else if (newFoodPos_x == newSecondPos_x && newFoodPos_y == newSecondPos_y)
-        {
-            continue;
-        }
-
-
-        for (int bucketIndex = 0; bucketIndex < foodBucket->getSize(); bucketIndex++)   // Check overlapping previous food position
-        {
-            foodBucket->getElement(foodPos, bucketIndex);
-
-            if (newFoodPos.isPosEqual(&foodPos) || newSecondPos.isPosEqual(&foodPos))        // Avoid generating at the last position
+            if (newFoodPos.x == oldFoodPos.x && newFoodPos.y == oldFoodPos.y)
             {
                 continue;
             }
         }
-
 
         for (int snakeIndex = 0; snakeIndex < snakeSize; snakeIndex++)
         {
-            thisList->getElement(snakeBodyPos, snakeIndex);   // Access each element in the player position list, start from the head
+            thisList->getElement(snakeBodyPos, snakeIndex);
 
-            if (newFoodPos.isPosEqual(&snakeBodyPos) || newSecondPos.isPosEqual(&snakeBodyPos))       // Check the position overlapping
+            if (newFoodPos.isPosEqual(&snakeBodyPos))
             {
                 continue;
             }
         }
-        foodBucket->insertHead(newSecondPos);
-        foodBucket->insertHead(newFoodPos);        // Insert the new generated position
-        foodBucket->removeTail();                  // Remove the old position
+
+        foodBucket->insertHead(newFoodPos);
         foodBucket->removeTail();
 
         done = 1;
@@ -102,6 +77,5 @@ objPosArrayList* Food::getBucket()
 int Food::getBucketSize()
 {
     int size = foodBucket->getSize();
-
     return size;
 }

@@ -14,7 +14,7 @@ GameMechs* myGame;      // Global pointer to GameMechs class
 Player* myPlayer;       // Global pointer to Plyer class
 Food* myFood;           // Global pointer to Food class
 objPosArrayList* playerList;     // Global pointer to the player list
-objPosArrayList* tempFoodList;   // Global pointer to the food list
+objPosArrayList* tempFoodList;
 
 
 objPos headPos;         // Reference for the head position in the list
@@ -78,9 +78,10 @@ void RunLogic(void)
     myPlayer->updatePlayerDir();
     myPlayer->movePlayer();
 
-    playerList->getHeadElement(headPos);                // Get new head position in each game loop
-
-    tempFoodList = myFood->getBucket();                 // Get new bucket
+    playerList->getHeadElement(headPos);        // Get new head position in each game loop
+    
+    tempFoodList = myFood->getBucket();            // Get new food position in each game loop
+    tempFoodList->getHeadElement(tempFoodPos);
 }
 
 
@@ -89,8 +90,6 @@ void DrawScreen(void)
 {
     int i, j;       // i is row, j is column
     int listIndex;
-    int bucketIndex;
-    objPos foodPos;     // For debugging message
     
 
     MacUILib_clearScreen();    
@@ -129,13 +128,19 @@ void DrawScreen(void)
 
 
             
-            
+
             if (i == headPos.y && j == headPos.x)
             {
                 MacUILib_printf("%c", headPos.symbol);      // Add head position
                 isCellFilled = true;
             }
             
+
+            else if (i == tempFoodPos.y && j == tempFoodPos.x)
+            {
+                MacUILib_printf("%c", tempFoodPos.symbol);      // Add food position
+                isCellFilled = true;
+            }
             
 
             for (listIndex = 1; listIndex < playerList->getSize(); listIndex++)
@@ -145,20 +150,6 @@ void DrawScreen(void)
                 if (i == bodyPos.y && j == bodyPos.x)
                 {
                     MacUILib_printf("%c", bodyPos.symbol);      // Add body position
-                    isCellFilled = true;
-                    break;
-                }
-            }
-
-
-
-            for (bucketIndex = 0; bucketIndex < myFood->getBucketSize(); bucketIndex++)
-            {
-                tempFoodList->getElement(tempFoodPos, bucketIndex);     // Access each food element from the head
-
-                if (i == tempFoodPos.y && j == tempFoodPos.x)
-                {
-                    MacUILib_printf("%c", tempFoodPos.symbol);      // Add food position
                     isCellFilled = true;
                     break;
                 }
@@ -188,16 +179,8 @@ void DrawScreen(void)
 
     MacUILib_printf("\n///////Debugging message///////\n");
     MacUILib_printf("List size: %d\n", playerList->getSize());
-    MacUILib_printf("Food bucket size: %d\n", myFood->getBucketSize());
-
-    MacUILib_printf("Head position %c: [%d %d]\n\n", headPos.symbol, headPos.x, headPos.y);
-
-    for (int i = 0; i < 2; i++)
-    {
-        tempFoodList->getElement(foodPos, i);
-
-        MacUILib_printf("Food position %c: [%d %d]\n", foodPos.symbol, foodPos.x, foodPos.y);
-    }
+    MacUILib_printf("Food position %c: [%d %d]\n", tempFoodPos.symbol, tempFoodPos.x, tempFoodPos.y);
+    MacUILib_printf("Head position %c: [%d %d]\n", headPos.symbol, headPos.x, headPos.y);
 }
 
 void LoopDelay(void)
