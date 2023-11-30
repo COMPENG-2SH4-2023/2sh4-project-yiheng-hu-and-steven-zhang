@@ -183,7 +183,6 @@ void DrawScreen(void)
 
     MacUILib_printf("\n///////Debugging message///////\n");
     MacUILib_printf("List size: %d\n", playerList->getSize());
-    MacUILib_printf("Food position %c: [%d %d]\n", foodPos.symbol, foodPos.x, foodPos.y);
     MacUILib_printf("Head position %c: [%d %d]\n", headPos.symbol, headPos.x, headPos.y);
 }
 
