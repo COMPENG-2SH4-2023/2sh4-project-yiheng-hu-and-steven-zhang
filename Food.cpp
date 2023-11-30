@@ -43,18 +43,18 @@ void Food::generateFood(objPosArrayList* thisList)
     {
         for (int i = bucketSize - 1; i >= 0; i--)
         {
-            newFoodPos.setObjPos(1, 1, 'a' + i);
+            newFoodPos.setObjPos(1, 1, '0');
 
             newFoodPos.x = 1 + rand() % 28;        // range[1, 28]
             newFoodPos.y = 1 + rand() % 13;        // range[1, 13]
 
 
 
-            for (int bucketIndex = 0; bucketIndex < bucketSize; bucketIndex++)      // Check if generate at the same position
+            for (int bucketIndex = 0; bucketIndex < bucketSize; bucketIndex++)      // Check if overlap the other elements
             {
                 foodBucket->getElement(oldFoodPos, bucketIndex);
 
-                if (newFoodPos.x == oldFoodPos.x && newFoodPos.y == oldFoodPos.y)
+                if (newFoodPos.isPosEqual(&oldFoodPos))
                 {
                     continue;
                 }
@@ -68,6 +68,16 @@ void Food::generateFood(objPosArrayList* thisList)
                 {
                     continue;
                 }
+            }
+
+            if (i == 1)
+            {
+                newFoodPos.setSymbol('A');
+            }
+
+            if (i == 0)
+            {
+                newFoodPos.setSymbol('B');
             }
 
             foodBucket->insertHead(newFoodPos);

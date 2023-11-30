@@ -13,8 +13,8 @@ StudentID: [400297440]
 
 Student 2 information:
 
-Section: [L0x]
+Section: [L02]
 
-MacID: [xxx]
+MacID: [hu128]
 
-StudentID: [xxxxxxxxx]
+StudentID: [400446955]

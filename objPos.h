@@ -13,7 +13,9 @@ class objPos
         objPos(int xPos, int yPos, char sym);
 
         void setObjPos(objPos o);        
-        void setObjPos(int xPos, int yPos, char sym);  
+        void setObjPos(int xPos, int yPos, char sym); 
+        void setSymbol(char sym);
+
         void getObjPos(objPos &returnPos);      // Pass by reference, provide an empty objPos into this function
         char getSymbol();
 

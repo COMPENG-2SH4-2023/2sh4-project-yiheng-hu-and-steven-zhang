@@ -93,7 +93,6 @@ void Player::movePlayer()
     objPosArrayList* playerFoodList;
 
     playerFoodList = playerFood->getBucket();
-    //playerFoodList->getHeadElement(playerFoodPos);
 
     playerPosList->getHeadElement(headPos);
     
@@ -122,7 +121,21 @@ void Player::movePlayer()
 
                 if (headPos.x == playerFoodPos.x && headPos.y == playerFoodPos.y) 
                 {
-                    mainGameMechsRef->incrementScore();
+                    if (playerFoodPos.symbol == 'A')
+                    {
+                        mainGameMechsRef->bonusIncrementScore();
+                    }
+
+                    else if (playerFoodPos.symbol == 'B')
+                    {
+                        mainGameMechsRef->incrementScore();
+                        playerPosList->removeTail();
+                    }
+
+                    else
+                    {
+                        mainGameMechsRef->incrementScore();
+                    }
 
                     updateHead(headPos, nextHeadPos);       // Insert head without removing tail
                     playerFood->generateFood(playerPosList);      // Generate new food
@@ -152,7 +165,21 @@ void Player::movePlayer()
 
                 if (headPos.x == playerFoodPos.x && headPos.y == playerFoodPos.y)       // Check food consumption
                 {
-                    mainGameMechsRef->incrementScore();
+                    if (playerFoodPos.symbol == 'A')
+                    {
+                        mainGameMechsRef->bonusIncrementScore();
+                    }
+
+                    else if (playerFoodPos.symbol == 'B')
+                    {
+                        mainGameMechsRef->incrementScore();
+                        playerPosList->removeTail();
+                    }
+
+                    else
+                    {
+                        mainGameMechsRef->incrementScore();
+                    }
 
                     updateHead(headPos, nextHeadPos);
                     playerFood->generateFood(playerPosList);      // Generate new food
@@ -181,7 +208,21 @@ void Player::movePlayer()
 
                 if (headPos.x == playerFoodPos.x && headPos.y == playerFoodPos.y)       // Check food consumption
                 {
-                    mainGameMechsRef->incrementScore();
+                    if (playerFoodPos.symbol == 'A')
+                    {
+                        mainGameMechsRef->bonusIncrementScore();
+                    }
+
+                    else if (playerFoodPos.symbol == 'B')
+                    {
+                        mainGameMechsRef->incrementScore();
+                        playerPosList->removeTail();
+                    }
+
+                    else
+                    {
+                        mainGameMechsRef->incrementScore();
+                    }
 
                     updateHead(headPos, nextHeadPos);
                     playerFood->generateFood(playerPosList);      // Generate new food
@@ -210,7 +251,21 @@ void Player::movePlayer()
 
                 if (headPos.x == playerFoodPos.x && headPos.y == playerFoodPos.y)       // Check food consumption
                 {
-                    mainGameMechsRef->incrementScore();
+                    if (playerFoodPos.symbol == 'A')
+                    {
+                        mainGameMechsRef->bonusIncrementScore();
+                    }
+
+                    else if (playerFoodPos.symbol == 'B')
+                    {
+                        mainGameMechsRef->incrementScore();
+                        playerPosList->removeTail();
+                    }
+
+                    else
+                    {
+                        mainGameMechsRef->incrementScore();
+                    }
 
                     updateHead(headPos, nextHeadPos);
                     playerFood->generateFood(playerPosList);      // Generate new food
