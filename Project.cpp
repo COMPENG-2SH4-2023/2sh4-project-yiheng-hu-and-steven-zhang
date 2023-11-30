@@ -78,27 +78,24 @@ void RunLogic(void)
 
 void DrawScreen(void)
 {
-    int i, j;       // i is row, j is column
-    int listIndex;
+    objPosArrayList* foodList;   // Pointer to the food bucket
 
-    objPosArrayList* tempFoodList;   // Pointer to the food bucket
-
-    objPos headPos;         // Reference for the head position in the list
-    objPos snakePos;        // Reference for the body position
-    objPos tempFoodPos;     // Reference for food position
+    objPos headPos;         // Reference for the head position of the snake 
+    objPos snakePos;        // Reference for the body position of the snake
+    objPos foodPos;         // Reference for food position of the bucket
 
     playerList->getHeadElement(headPos);        // Get new head position in each game loop
 
-    tempFoodList = myFood->getBucket();             // Get new food list in each game loop
-    tempFoodList->getHeadElement(tempFoodPos);      // Get new food position
+    foodList = myFood->getBucket();             // Get new food list in each game loop
+    foodList->getHeadElement(foodPos);          // Get new food position
     
 
     MacUILib_clearScreen();    
 
 
-    for (i = 0; i < myGame->getBoardSizeY(); i++)
+    for (int i = 0; i < myGame->getBoardSizeY(); i++)       // i is row
     {
-        for (j = 0; j < myGame->getBoardSizeX(); j++)
+        for (int j = 0; j < myGame->getBoardSizeX(); j++)   // j is column
         {
             bool isCellFilled = false;      // Check if the cell is been taken
 
@@ -129,21 +126,34 @@ void DrawScreen(void)
 
 
 
-
-            else if (i == tempFoodPos.y && j == tempFoodPos.x)
+            /*
+            else if (i == foodPos.y && j == foodPos.x)
             {
-                MacUILib_printf("%c", tempFoodPos.symbol);      // Add food position
+                MacUILib_printf("%c", foodPos.symbol);      // Add food position
                 isCellFilled = true;
             }
-            
+            */
 
-            for (listIndex = 0; listIndex < playerList->getSize(); listIndex++)
+            for (int foodIndex = 0; foodIndex < foodList->getSize(); foodIndex++)
             {
-                playerList->getElement(snakePos, listIndex);      // Access each element from the head
+                foodList->getElement(foodPos, foodIndex);       // Access each food element from the head
+
+                if (i == foodPos.y && j == foodPos.x)
+                {
+                    MacUILib_printf("%c", foodPos.symbol);      // Add each food position
+                    isCellFilled = true;
+                    break;
+                }
+            }
+
+
+            for (int listIndex = 0; listIndex < playerList->getSize(); listIndex++)
+            {
+                playerList->getElement(snakePos, listIndex);      // Access each snake element from the head
 
                 if (i == snakePos.y && j == snakePos.x)
                 {
-                    MacUILib_printf("%c", snakePos.symbol);      // Add snake position
+                    MacUILib_printf("%c", snakePos.symbol);      // Add each snake position
                     isCellFilled = true;
                     break;
                 }
@@ -173,7 +183,7 @@ void DrawScreen(void)
 
     MacUILib_printf("\n///////Debugging message///////\n");
     MacUILib_printf("List size: %d\n", playerList->getSize());
-    MacUILib_printf("Food position %c: [%d %d]\n", tempFoodPos.symbol, tempFoodPos.x, tempFoodPos.y);
+    MacUILib_printf("Food position %c: [%d %d]\n", foodPos.symbol, foodPos.x, foodPos.y);
     MacUILib_printf("Head position %c: [%d %d]\n", headPos.symbol, headPos.x, headPos.y);
 }
 

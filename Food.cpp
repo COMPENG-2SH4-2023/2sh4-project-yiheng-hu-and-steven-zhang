@@ -4,11 +4,18 @@
 Food::Food()
 {
     objPos initialHeadPos;
+    objPos bodyPos;
     initialHeadPos.setObjPos(5, 5, '1');
 
     foodBucket = new objPosArrayList();
 
     foodBucket->insertHead(initialHeadPos);
+
+    for (int i = 1; i < 5; i++)
+    {
+        bodyPos.setObjPos(5 + i, 5 + i, '1' + i);
+        foodBucket->insertTail(bodyPos);
+    }
 }
 
 Food::~Food()
