@@ -35,42 +35,45 @@ void Food::generateFood(objPosArrayList* thisList)
     objPos newFoodPos;
     objPos oldFoodPos;
 
-    newFoodPos.setObjPos(1, 1, '0');
-
 
     srand(time(NULL));
 
 
     while (!done)
     {
-        newFoodPos.x = 1 + rand() % 28;        // range[1, 28]
-        newFoodPos.y = 1 + rand() % 13;        // range[1, 13]
-
-
-
-        for (int bucketIndex = 0; bucketIndex < bucketSize; bucketIndex++)
+        for (int i = bucketSize - 1; i >= 0; i--)
         {
-            foodBucket->getElement(oldFoodPos, bucketIndex);
+            newFoodPos.setObjPos(1, 1, 'a' + i);
 
-            if (newFoodPos.x == oldFoodPos.x && newFoodPos.y == oldFoodPos.y)
+            newFoodPos.x = 1 + rand() % 28;        // range[1, 28]
+            newFoodPos.y = 1 + rand() % 13;        // range[1, 13]
+
+
+
+            for (int bucketIndex = 0; bucketIndex < bucketSize; bucketIndex++)      // Check if generate at the same position
             {
-                continue;
+                foodBucket->getElement(oldFoodPos, bucketIndex);
+
+                if (newFoodPos.x == oldFoodPos.x && newFoodPos.y == oldFoodPos.y)
+                {
+                    continue;
+                }
             }
-        }
 
-        for (int snakeIndex = 0; snakeIndex < snakeSize; snakeIndex++)
-        {
-            thisList->getElement(snakeBodyPos, snakeIndex);
-
-            if (newFoodPos.isPosEqual(&snakeBodyPos))
+            for (int snakeIndex = 0; snakeIndex < snakeSize; snakeIndex++)      // Check if overlap the snake body
             {
-                continue;
+                thisList->getElement(snakeBodyPos, snakeIndex);
+
+                if (newFoodPos.isPosEqual(&snakeBodyPos))
+                {
+                    continue;
+                }
             }
+
+            foodBucket->insertHead(newFoodPos);
+            foodBucket->removeTail();
         }
-
-        foodBucket->insertHead(newFoodPos);
-        foodBucket->removeTail();
-
+        
         done = 1;
     }
 }
