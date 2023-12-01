@@ -9,12 +9,6 @@
 
 class Player
 {
-    // Construct the remaining declaration from the project manual.
-
-    // Only some sample members are included here
-
-    // You will include more data members and member functions to complete your design.
-
     public:
         enum Dir {UP, DOWN, LEFT, RIGHT, STOP};  // This is the direction state
 
@@ -29,14 +23,15 @@ class Player
         void movePlayer();
         void updateHead(objPos headPos, objPos nextHead);
 
+        void foodConsumption(objPosArrayList* thisBucket, objPos thisFood, objPos thisHead, objPos nextHead, int bucketSize);
+
         bool checkSelfCollision(objPos headPos);
 
-    private:
-        //objPos playerPos;   // Upgrade this in iteration 3.      
+    private:      
         objPosArrayList* playerPosList; 
         enum Dir myDir;
 
-        // Need a reference to the Main Game Mechanisms
+        // References to the Main Game Mechanisms and food
         GameMechs* mainGameMechsRef;
         Food* playerFood; 
 };
