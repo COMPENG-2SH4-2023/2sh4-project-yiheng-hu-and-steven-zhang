@@ -105,9 +105,9 @@ void Player::movePlayer()
         break;
 
         case UP: 
-            if (headPos.y == 1)     // Head position is 1 ahead next position, therefore start from index 1
+            if (headPos.y == 1)     // Head position is 1 ahead next position, therefore start from index 1 (boundary check)
             {
-                headPos.y = 13;     // Same reason, so that start from last index
+                headPos.y = 13;     // Same reason, so that start from the second last index
             }
             else
             {
@@ -178,6 +178,7 @@ void Player::updateHead(objPos headPos, objPos nextHead)
     nextHead.setObjPos(headPos.x, headPos.y, headPos.symbol);
     playerPosList->insertHead(nextHead);
 }
+
 
 
 bool Player::checkSelfCollision(objPos headPos)

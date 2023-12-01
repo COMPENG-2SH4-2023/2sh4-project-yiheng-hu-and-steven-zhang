@@ -9,8 +9,9 @@ Food::Food()
 
     foodBucket = new objPosArrayList();
 
+    // Initialize 5 food elements
     foodBucket->insertHead(initialHeadPos);
-
+    
     for (int i = 1; i < 5; i++)
     {
         bodyPos.setObjPos(5 + i, 5 + i, '1' + i);
@@ -43,42 +44,25 @@ void Food::generateFood(objPosArrayList* thisList)
     {
         for (int i = bucketSize - 1; i >= 0; i--)
         {
-            newFoodPos.setObjPos(1, 1, '0');
-
             newFoodPos.x = 1 + rand() % 28;        // range[1, 28]
             newFoodPos.y = 1 + rand() % 13;        // range[1, 13]
+            newFoodPos.setSymbol('0');             // Assign the default symbol
 
 
+            overlapCheck(bucketSize, oldFoodPos, newFoodPos, foodBucket);   // Check if overlap the other food
+            overlapCheck(snakeSize, snakeBodyPos, newFoodPos, thisList);    // Check if overlap the snake
 
-            for (int bucketIndex = 0; bucketIndex < bucketSize; bucketIndex++)      // Check if overlap the other elements
-            {
-                foodBucket->getElement(oldFoodPos, bucketIndex);
-
-                if (newFoodPos.isPosEqual(&oldFoodPos))
-                {
-                    continue;
-                }
-            }
-
-            for (int snakeIndex = 0; snakeIndex < snakeSize; snakeIndex++)      // Check if overlap the snake body
-            {
-                thisList->getElement(snakeBodyPos, snakeIndex);
-
-                if (newFoodPos.isPosEqual(&snakeBodyPos))
-                {
-                    continue;
-                }
-            }
-
-            if (i == 1)
+            // Change the symbols of the first two food elements
+            if (i == 0)
             {
                 newFoodPos.setSymbol('A');
             }
 
-            if (i == 0)
+            else if (i == 1)
             {
                 newFoodPos.setSymbol('B');
             }
+            
 
             foodBucket->insertHead(newFoodPos);
             foodBucket->removeTail();
@@ -94,8 +78,23 @@ objPosArrayList* Food::getBucket()
     return foodBucket;
 }
 
+
 int Food::getBucketSize()
 {
     int size = foodBucket->getSize();
     return size;
+}
+
+
+void Food::overlapCheck(int size, objPos oldPos, objPos newPos, objPosArrayList* list)
+{
+    for (int i = 0; i < size; i++)
+    {
+        list->getElement(oldPos, i);    // Access each element in the list
+
+        if (newPos.isPosEqual(&oldPos))
+        {
+            continue;       // Continue the loop (this function normally used in the loop)
+        }
+    }
 }

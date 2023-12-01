@@ -13,12 +13,6 @@ using namespace std;
 
 class GameMechs
 {
-    // Construct the remaining declaration from the project manual.
-
-    // Only some sample members are included here
-
-    // You will include more data members and member functions to complete your design.
-
     private:
         char input;
         int score;
@@ -31,7 +25,6 @@ class GameMechs
     public:
         GameMechs();
         GameMechs(int boardX, int boardY);
-        ~GameMechs();
         
         bool getExitFlagStatus();
         bool getLoseFlagStates();
@@ -44,12 +37,10 @@ class GameMechs
 
         int getScore();
         void incrementScore();
-        void bonusIncrementScore();
+        void bonusIncrementScore();     // Increase 10 points
 
         int getBoardSizeX();
         int getBoardSizeY();
-      
-
 };
 
 #endif

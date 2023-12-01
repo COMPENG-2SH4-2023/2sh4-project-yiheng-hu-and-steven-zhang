@@ -16,8 +16,9 @@ class Food
         void generateFood(objPosArrayList* thisList); 
 
         int getBucketSize();
-
         objPosArrayList* getBucket();       // Return the bucket
+
+        void overlapCheck(int size, objPos oldPos, objPos newPos, objPosArrayList* list);
 
     private:
         objPosArrayList* foodBucket;

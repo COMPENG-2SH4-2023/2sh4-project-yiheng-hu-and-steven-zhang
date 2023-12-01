@@ -18,7 +18,6 @@ objPosArrayList* playerList;     // Global pointer to the player list
 
 
 void Initialize(void);
-void GetInput(void);
 void RunLogic(void);
 void DrawScreen(void);
 void LoopDelay(void);
@@ -28,19 +27,16 @@ void CleanUp(void);
 
 int main(void)
 {
-
     Initialize();
 
     while(myGame->getExitFlagStatus() == false && myGame->getLoseFlagStates() == false)  
     {
-        //GetInput();   // Useless
         RunLogic();
         DrawScreen();
         LoopDelay();
     }
 
     CleanUp();
-
 }
 
 
@@ -60,12 +56,6 @@ void Initialize(void)
 }
 
 
-/*
-void GetInput(void)
-{
-   
-}
-*/
 
 
 void RunLogic(void)
@@ -126,13 +116,6 @@ void DrawScreen(void)
 
 
 
-            /*
-            else if (i == foodPos.y && j == foodPos.x)
-            {
-                MacUILib_printf("%c", foodPos.symbol);      // Add food position
-                isCellFilled = true;
-            }
-            */
 
             for (int foodIndex = 0; foodIndex < foodList->getSize(); foodIndex++)
             {
@@ -182,7 +165,7 @@ void DrawScreen(void)
     }
 
     MacUILib_printf("\n///////Debugging message///////\n");
-    MacUILib_printf("List size: %d\n", playerList->getSize());
+    MacUILib_printf("Snake size: %d\n", playerList->getSize());
     MacUILib_printf("Head position %c: [%d %d]\n", headPos.symbol, headPos.x, headPos.y);
 }
 

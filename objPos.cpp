@@ -14,13 +14,14 @@ objPos::objPos(objPos &o)
     symbol = o.symbol;
 }
 
-
 objPos::objPos(int xPos, int yPos, char sym)
 {
     x = xPos;
     y = yPos;
     symbol = sym;
 }
+
+
 
 void objPos::setObjPos(objPos o)
 {
@@ -41,6 +42,8 @@ void objPos::setSymbol(char sym)
     symbol = sym;
 }
 
+
+
 void objPos::getObjPos(objPos &returnPos)
 {
     returnPos.setObjPos(x, y, symbol);
@@ -50,6 +53,8 @@ char objPos::getSymbol()
 {
     return symbol;
 }
+
+
 
 bool objPos::isPosEqual(const objPos* refPos)
 {

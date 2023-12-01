@@ -1,7 +1,5 @@
 #include "objPosArrayList.h"
 
-// Check lecture contents on general purpose array list construction, 
-// and modify it to support objPos array list construction.
 
 objPosArrayList::objPosArrayList()
 {
@@ -10,24 +8,13 @@ objPosArrayList::objPosArrayList()
     List = new objPos[arrayCapacity];
 }
 
-objPosArrayList::objPosArrayList(const objPosArrayList &list)
-{
-    listSize = list.listSize;
-    arrayCapacity = list.arrayCapacity;
-    List = new objPos[ARRAY_MAX_CAP];
-
-
-    for (int i = 0; i < listSize; i++)
-    {
-        List[i] = list.List[i];
-    }
-    
-}
 
 objPosArrayList::~objPosArrayList()
 {
     delete [] List;
 }
+
+
 
 int objPosArrayList::getSize()
 {
@@ -67,6 +54,8 @@ void objPosArrayList::insertTail(objPos thisPos)
     List[listSize - 1] = thisPos;
 }
 
+
+
 void objPosArrayList::removeHead()
 {
     if (listSize == 0)       // Check if the array is empty
@@ -82,8 +71,6 @@ void objPosArrayList::removeHead()
         List[i] = List[i + 1];
     }
 
-    //List[listSize - 1] = objPos();      // Lazy delete, don't reset the last element to 0
-
     listSize--;
 }
 
@@ -94,9 +81,6 @@ void objPosArrayList::removeTail()
         cout << "Empty array!" << endl;
         return;
     }
-
-
-    //List[listSize - 1] = objPos();      // Lazy delete, don't reset the last element to 0
 
     listSize--;
 }
